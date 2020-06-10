@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Smart Record Create</masterLabel>
+     <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+     <targetConfigs>  
+        <targetConfig targets="lightning__HomePage,lightning__RecordPage,lightning__AppPage">
+            <property name="buttonLabel" type="String" default="Lead Create" label="Label of Create object button"/>
+            <property name="object" type="String" default="Lead" label="Enter Name of the Object you want to create from OCR Data"/>
+            <property name="address" type="String" default="Address__c" label="Field name to hold Address field"/>
+            <property name="phone" type="String" default="Phone" label="Field name to hold phone field"/>
+            <property name="mobilephone" type="String" default="MobilePhone" label="Field name to hold Mobile Phone field"/>
+            <property name="email" type="String" default="Email" label="Field name to hold Email field"/>
+            <property name="website" type="String" default="Website" label="Field name to hold website field"/>
+            <property name="company" type="String" default="Company" label="Field name to hold company field"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

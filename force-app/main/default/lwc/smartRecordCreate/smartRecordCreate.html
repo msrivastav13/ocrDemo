@@ -1,0 +1,19 @@
+<template>
+    <div class="slds-p-around_medium lgc-bg">
+        <lightning-input type="file" label={buttonLabel} accept="image/png, image/jpg"
+            onchange={handleFileChange}></lightning-input>
+        <br> </br>
+        <lightning-button variant="brand" label={buttonLabel} title="Primary action" onclick={handleClick}
+            class="slds-m-left_x-small" disabled={buttonDisabled}></lightning-button>
+    </div>
+    <div if:true={startSpinning} class="slds-is-relative">
+        <lightning-spinner
+            alternative-text="Creating Lead...">
+        </lightning-spinner>
+    </div>
+    <div>
+        <template if:true={previewURL}>
+            <img class="lgc-bg" src={previewURL} />
+        </template>
+    </div>
+</template>
