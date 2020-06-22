@@ -78,7 +78,7 @@ export default class SmartRecordCreate extends LightningElement {
         const evt = new ShowToastEvent({
             title: 'Record Creation is Successfull',
             // eslint-disable-next-line dot-notation
-            message: 'Lead Record Created RecordId ' + resultRecord.recordId,
+            message: 'Record Created with RecordId ' + resultRecord.recordId,
             variant: 'success',
         });
         this.dispatchEvent(evt);
