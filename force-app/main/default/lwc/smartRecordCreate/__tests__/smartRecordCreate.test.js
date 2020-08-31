@@ -55,7 +55,7 @@ describe('c-smart-record-create', () => {
         return new Promise((resolve) => setImmediate(resolve));
     }
 
-    it('render smart record create component', () => {
+    it('renders smart record create component', () => {
         const element = createElement('c-smart-record-create', {
             is: SmartRecordCreate
         });
@@ -68,17 +68,13 @@ describe('c-smart-record-create', () => {
         element.website = 'Website';
         element.company = 'Company';
         document.body.appendChild(element);
-        return Promise.resolve().then(() => {
-            const lightningInput = element.shadowRoot.querySelector(
-                'lightning-input'
-            );
-            expect(lightningInput.label).toBe(element.buttonLabel);
-            expect(lightningInput.type).toBe('file');
-            expect(formFactorPropertyName).toBe('Large');
-        });
+        const lightningInput = element.shadowRoot.querySelector(
+            'lightning-input'
+        );
+        expect(lightningInput.label).toBe(element.buttonLabel);
     });
 
-    it('change file input', () => {
+    it('fires change handler upon file input', () => {
         // The URL.createObjectURL is not implemented
         // JavaScript implementation of the WHATWG DOM used by jest doesn't implement this method
         global.URL.createObjectURL = jest.fn();
@@ -94,23 +90,22 @@ describe('c-smart-record-create', () => {
         element.website = 'Website';
         element.company = 'Company';
         document.body.appendChild(element);
+        const lightningInput = element.shadowRoot.querySelector(
+            'lightning-input'
+        );
+        // create a dummy file
+        const fileContents = 'file contents';
+        const file = new Blob([fileContents], { type: 'image/png' });
+        lightningInput.files = [file];
+        lightningInput.dispatchEvent(new CustomEvent('change'));
+            
         return Promise.resolve().then(() => {
-            const lightningInput = element.shadowRoot.querySelector(
-                'lightning-input'
-            );
-            // create a dummy file
-            const fileContents = 'file contents';
-            const file = new Blob([fileContents], { type: 'image/png' });
-            lightningInput.files = [file];
-            lightningInput.dispatchEvent(new CustomEvent('change'));
-            Promise.resolve().then(() => {
-                const image = element.shadowRoot.querySelector('.lgc-bg');
-                expect(image.src).toBe(URL.createObjectURL(file));
-            });
+            const image = element.shadowRoot.querySelector('.lgc-bg');
+            expect(image.src).toBe(URL.createObjectURL(file));
         });
     });
 
-    it('click record create button', () => {
+    it('clicks record create button', () => {
         // The URL.createObjectURL is not implemented
         // JavaScript implementation of the WHATWG DOM used by jest doesn't implement this method
         global.URL.createObjectURL = jest.fn();
@@ -152,12 +147,10 @@ describe('c-smart-record-create', () => {
                     'lightning-button'
                 );
                 buttonElement.click();
-            })
-            .then(() => {
                 flushPromises().then(() => {
                     expect(createRecord).toHaveBeenCalled();
                 });
-            });
+            })
     });
 
     it('click record create button and error out', () => {
