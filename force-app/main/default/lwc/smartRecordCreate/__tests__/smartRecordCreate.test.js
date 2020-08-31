@@ -147,10 +147,12 @@ describe('c-smart-record-create', () => {
                     'lightning-button'
                 );
                 buttonElement.click();
+            })
+            .then(() => {
                 flushPromises().then(() => {
                     expect(createRecord).toHaveBeenCalled();
                 });
-            })
+            });
     });
 
     it('click record create button and error out', () => {

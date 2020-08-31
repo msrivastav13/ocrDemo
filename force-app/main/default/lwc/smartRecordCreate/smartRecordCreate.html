@@ -1,10 +1,10 @@
 <template>
-    <div class="slds-p-around_medium lgc-bg">
+    <div class="slds-var-p-around_medium lgc-bg">
         <lightning-input type="file" label={buttonLabel} accept="image/png, image/jpg"
             onchange={handleFileChange}></lightning-input>
         <br> </br>
         <lightning-button variant="brand" label={buttonLabel} title="Primary action" onclick={handleClick}
-            class="slds-m-left_x-small" disabled={buttonDisabled}></lightning-button>
+            class="slds-var-m-left_x-small" disabled={buttonDisabled}></lightning-button>
     </div>
     <div if:true={startSpinning} class="slds-is-relative">
         <lightning-spinner
