@@ -2,6 +2,9 @@ import { createElement } from 'lwc';
 import ShowToastEventName from 'lightning/platformShowToastEvent';
 import SmartRecordCreate from 'c/smartRecordCreate';
 import createRecord from '@salesforce/apex/SmartRecordCreateController.createRecord';
+
+const SUCCESS_RESPONSE = require('./data/createRecordResponse.json');
+
 // Mocking imperative Apex method call
 jest.mock(
     '@salesforce/apex/SmartRecordCreateController.createRecord',
@@ -12,8 +15,6 @@ jest.mock(
     },
     { virtual: true }
 );
-
-const SUCCESS_RESPONSE = require('./data/createRecordResponse.json');
 
 const fields = {
     ADDRESS: 'Address__c',
@@ -98,7 +99,7 @@ describe('c-smart-record-create', () => {
         const file = new Blob([fileContents], { type: 'image/png' });
         lightningInput.files = [file];
         lightningInput.dispatchEvent(new CustomEvent('change'));
-            
+
         return Promise.resolve().then(() => {
             const image = element.shadowRoot.querySelector('.lgc-bg');
             expect(image.src).toBe(URL.createObjectURL(file));
@@ -109,11 +110,8 @@ describe('c-smart-record-create', () => {
         // The URL.createObjectURL is not implemented
         // JavaScript implementation of the WHATWG DOM used by jest doesn't implement this method
         global.URL.createObjectURL = jest.fn();
+        createRecord.mockResolvedValue(SUCCESS_RESPONSE);
 
-        createRecord.mockImplementation(() =>
-            Promise.resolve(SUCCESS_RESPONSE)
-        );
-        
         const element = createElement('c-smart-record-create', {
             is: SmartRecordCreate
         });
@@ -141,18 +139,17 @@ describe('c-smart-record-create', () => {
         lightningInput.files = [file];
         lightningInput.dispatchEvent(new CustomEvent('change'));
 
-        return Promise.resolve()
-            .then(() => {
-                const buttonElement = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
-                buttonElement.click();
-            })
-            .then(() => {
-                flushPromises().then(() => {
-                    expect(createRecord).toHaveBeenCalled();
-                });
+        const buttonElement = element.shadowRoot.querySelector(
+            'lightning-button'
+        );
+        buttonElement.click();
+
+        return flushPromises().then(() => {
+            flushPromises().then(() => {
+                expect(createRecord).toHaveBeenCalled();
+                expect(createRecord.mock.calls[0][0]).toEqual(APEX_PARAMETERS);
             });
+        });
     });
 
     it('click record create button and error out', () => {
@@ -189,17 +186,15 @@ describe('c-smart-record-create', () => {
         lightningInput.files = [file];
         lightningInput.dispatchEvent(new CustomEvent('change'));
 
-        return Promise.resolve()
-            .then(() => {
-                const buttonElement = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
-                buttonElement.click();
-            })
-            .then(() => {
-                flushPromises().then(() => {
-                    expect(handler).toHaveBeenCalled();
-                });
+        const buttonElement = element.shadowRoot.querySelector(
+            'lightning-button'
+        );
+        buttonElement.click();
+
+        return flushPromises().then(() => {
+            flushPromises().then(() => {
+                expect(createRecord).toHaveBeenCalled();
             });
+        });
     });
 });
