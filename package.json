@@ -17,7 +17,7 @@
   "devDependencies": {
     "@prettier/plugin-xml": "^0.10.0",
     "@salesforce/eslint-config-lwc": "^0.7.0",
-    "@salesforce/sfdx-lwc-jest": "^0.9.2",
+    "@salesforce/sfdx-lwc-jest": "^1.2.1",
     "eslint": "^7.6.0",
     "prettier": "^2.0.5",
     "prettier-plugin-apex": "^1.6.0"
